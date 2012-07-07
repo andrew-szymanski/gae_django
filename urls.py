@@ -6,4 +6,6 @@ urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
     ('^$', 'django.views.generic.simple.direct_to_template',
      {'template': 'home.html'}),
+                       
+    url(r'^debug/form/$', 'votuition.views.form_sample'),                           
 )

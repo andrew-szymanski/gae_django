@@ -1,0 +1,12 @@
+[
+   {
+      "pk": 2,
+      "model": "votuition.vote",
+      "fields": {
+         "user_id": "a@b.com",
+         "vote_subject": "house",
+         "vote_value": 59,
+         "categories": ["film", "movies", "cinema", "mortgage"]
+      }
+   }
+]

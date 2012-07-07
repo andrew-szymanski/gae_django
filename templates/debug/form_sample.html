@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Votuition: Form Submission form{% endblock %}
+
+{% block content %}
+<br />
+<h1>Form Submission form</h1>
+<br />
+<form action="/debug/form/" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
