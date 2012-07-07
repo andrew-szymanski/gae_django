@@ -8,4 +8,5 @@ urlpatterns = patterns('',
      {'template': 'home.html'}),
                        
     url(r'^debug/form/$', 'votuition.views.form_sample'),                           
+    url(r'^debug/form_response/$', 'votuition.views.form_response'),                           
 )
