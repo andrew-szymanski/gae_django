@@ -2,3 +2,31 @@
 
 Created from instructions:
 http://www.allbuttonspressed.com/projects/djangoappengine
+
+********************************************
+**** Key steps to get it working on Mac OSX
+********************************************
+
+1.
+WARNING:root:The rdbms API is not available because the MySQLdb library could not be loaded.
+# MySQLdb python module
+export DYLD_LIBRARY_PATH=/usr/local/mysql-5.5.25-osx10.6-x86_64/lib/
+
+2.
+Error was: No module named dbindexer.base
+Modules in downloaded code contain setup.py and then module folder itself (i.e. django/django) - so the content of the final
+folder should be copied, and not a folder within a folder.
+
+3.
+File "/Applications/DEV/GoogleAppEngineLauncher.app/Contents/Resources/GoogleAppEngine-default.bundle/Contents/Resources/google_appengine/google/appengine/ext/webapp/_webapp25.py", line 75, in <module>
+    import webob
+ImportError: No module named webob
+https://github.com/django-nonrel/djangoappengine/issues/23
+
+Fix - add those 2 lines:
+https://github.com/dragonx/djangoappengine/commit/257e3390ab4768abbb6d82af6c16438cb9ede3cb
+
+./manage.py runserver runs now....
+
+
+
