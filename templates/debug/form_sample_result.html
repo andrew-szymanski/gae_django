@@ -5,22 +5,8 @@
 <br />
 <h1>3. Check result</h1>
 
-	 <table border="1" cellspacing="0" cellpadding="10">
-	    {% for field in form %}
-	    	  <tr class="fieldWrapper">
-	    	  		<td>{{ field.label_tag }}</td>
-			        <td>{{ field }}</td>
-			        {% if show_errors %}
-			      	  {% if field.errors %}
-			        			<td>{{ field.errors }}</td>
-				        {% else %}
-				        	<td>OK</td>
-				        {% endif %}
-			        {% else %}
-			        	<td>{{ field.help_text }}</td>
-			        {% endif %}
-	        </tr>
-	    {% endfor %}
-    </table>
+<p>
+  sending json: {{ json_str }}<br />
+</p>
     
 {% endblock %}

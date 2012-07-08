@@ -29,7 +29,10 @@ class VoteForm(forms.Form):
         return ret_json
 
 class JsonForm(forms.Form):
-    json = forms.CharField(max_length=250)
+    json = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'size': 10, 'title': 'enter your json',}))
+    
+    
+    
 
 #class VoteModelForm(ModelForm):
 #    class Meta:

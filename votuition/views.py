@@ -29,13 +29,20 @@ LOG_INDENT = "   "
 def form_response(request):
     #logger.debug("entering [%s]:[%s]" % (__file__, inspect.stack()[0][3]) )
     method_name = "form_response"
-    form = "aa"
     logger.debug("entering [%s]:[%s]" % (__file__, method_name) )
     #logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
     template_response = "debug/form_sample_result.html"
+    
+    json_str = ""
+    if request.method == 'GET':
+        # get json string
+        query_dict = request.GET
+        json_str = query_dict.get("json", "{}")
+        logger.debug("json_str: [%s]" % json_str)    
+    
     return render_to_response(template_response, {
                                               'view_type': "lala",
-                                              'form': form,    
+                                              'json_str': json_str,
                                               }
                               )
     
@@ -51,8 +58,15 @@ def form_json(request):
     if request.method == 'POST': # If the form has been submitted...
         form = JsonForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            #full_redirect_url = template_next + "?" + query_string
-            full_redirect_url = template_next
+            # convert data to JSON
+            json_data = form.cleaned_data['json']
+            logger.debug("json_data: [%s]" % json_data)
+            # construct query string
+            query_dict = QueryDict('json=%s' %  json_data)
+            query_string = query_dict.urlencode()
+            logger.debug("query_string: [%s]" % query_string)
+            #
+            full_redirect_url = template_next + "?" + query_string
             logger.debug("full_redirect_url: [%s]" % full_redirect_url)
             return redirect(full_redirect_url )
         else:
