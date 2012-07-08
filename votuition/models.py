@@ -5,6 +5,8 @@ class Vote(models.Model):
     
 
     user_id = models.CharField(max_length=250)
+    org_id = models.CharField(max_length=250, blank=True)
+    campaign_id = models.CharField(max_length=250, blank=True)
     vote_subject = models.CharField(max_length=250)
     vote_value = models.IntegerField()
     categories = ListField()

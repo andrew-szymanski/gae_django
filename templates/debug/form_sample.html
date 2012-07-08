@@ -6,7 +6,16 @@
 <h1>Form Submission form</h1>
 <br />
 <form action="/debug/form/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
+	 <table border="1" cellspacing="0" cellpadding="10">
+	    {% for field in form %}
+	    	  <tr class="fieldWrapper">
+	    	  		<td>{{ field.label_tag }}</td>
+			        <td>{{ field }}</td>
+			        <td>{{ field.errors }}</td>
+	        </tr>
+	    {% endfor %}
+    </table>
+    <p><input type="submit" value="POST results" /></p>
 </form>
+
 {% endblock %}
