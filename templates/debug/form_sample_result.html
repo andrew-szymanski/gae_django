@@ -6,7 +6,11 @@
 <h1>3. Check result</h1>
 
 <p>
-  sending json: {{ json_str }}<br />
+<table border="0" cellspacing="0" cellpadding="10">
+   {% for line in output_lines %}
+   	<tr><td>{{ line }}</td></tr>
+   {% endfor %}
+</table>
 </p>
     
 {% endblock %}

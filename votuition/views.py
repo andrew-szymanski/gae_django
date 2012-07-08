@@ -4,13 +4,16 @@ __version__ = "0.1.0"
 """ Forms playground
 """
 #from django.views.decorators.http import require_safe
+import urllib    
+import urllib2
 from django.template import Context, loader
 from django.http import HttpResponse
 from django.shortcuts import render,render_to_response, get_object_or_404, redirect
 from django.conf import settings
 from django.utils import simplejson
 from django.http import QueryDict
-import inspect
+from django.contrib.sites.models import Site
+#import inspect
 from types import *
 from votuition.forms import VoteForm
 from votuition.forms import JsonForm
@@ -33,16 +36,66 @@ def form_response(request):
     #logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
     template_response = "debug/form_sample_result.html"
     
+    host = request.get_host()  # hack - request is made by server so we should get server's url
+    logger.debug("host: [%s]" % host)
+    api_url = "http://%s/api/v1.0/vote" % host
+    
     json_str = ""
+    output_lines = list()
     if request.method == 'GET':
         # get json string
         query_dict = request.GET
         json_str = query_dict.get("json", "{}")
-        logger.debug("json_str: [%s]" % json_str)    
+        line = "json_str: %s" % json_str
+        logger.debug(line) 
+        output_lines.append(line) 
+        # call API
+        line = "preparing to POST to: [%s]" % api_url
+        logger.debug(line) 
+        output_lines.append(line) 
+        #data = simplejson.dumps(values)
+        req = urllib2.Request(api_url, json_str, {'Content-Type': 'application/json'})        
+
+        line = "posting data to server..."
+        logger.debug(line) 
+        output_lines.append(line) 
+        return_message = ""
+        try:
+            line = "sending request..."
+            logger.debug(line) 
+            output_lines.append(line) 
+            f = urllib2.urlopen(req)
+            line = "reading response..."
+            logger.debug(line) 
+            output_lines.append(line) 
+            response = f.read()
+            line = "response: [%s]" % response
+            logger.debug(line) 
+            output_lines.append(line) 
+            line = "closing connection..."
+            logger.debug(line) 
+            output_lines.append(line) 
+            f.close()   
+        except urllib2.HTTPError, e:
+            return_status = False
+            return_message = "%s (%s)" % (e.read(), e)
+            logger.error(return_message) 
+            output_lines.append(return_message) 
+        except urllib2.URLError, e:
+            return_status = False
+            return_message = "%s %s" % (return_message, e)
+            logger.error(return_message) 
+            output_lines.append(return_message) 
+        except Exception, e:
+            return_status = False
+            return_message = "%s %s" % (return_message, e)
+            logger.error(return_message) 
+            output_lines.append(return_message) 
+          
     
     return render_to_response(template_response, {
                                               'view_type': "lala",
-                                              'json_str': json_str,
+                                              'output_lines': output_lines,
                                               }
                               )
     

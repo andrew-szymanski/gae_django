@@ -12,5 +12,7 @@ urlpatterns = patterns('',
                                               
     url(r'^debug/form/$', 'votuition.views.form_sample'),                           
     url(r'^debug/form_json/$', 'votuition.views.form_json'),                           
-    url(r'^debug/form_response/$', 'votuition.views.form_response'),                           
+    url(r'^debug/form_response/$', 'votuition.views.form_response'),              
+    
+    url(r'^api/(.+)/vote', 'api.handlers.vote'),             
 )
