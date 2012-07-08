@@ -8,6 +8,8 @@ from django.template import Context, loader
 from django.http import HttpResponse
 from django.shortcuts import render,render_to_response, get_object_or_404, redirect
 from django.conf import settings
+from django.utils import simplejson
+from django.http import QueryDict
 import inspect
 from types import *
 from votuition.forms import VoteForm
@@ -27,27 +29,53 @@ def form_response(request):
     #logger.debug("entering [%s]:[%s]" % (__file__, inspect.stack()[0][3]) )
     method_name = "form_response"
     form = "aa"
-    logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
+    logger.debug("entering [%s]:[%s]" % (__file__, method_name) )
+    #logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
     template_response = "debug/form_sample_result.html"
     return render_to_response(template_response, {
                                               'view_type': "lala",
+                                              'form': form,    
                                               }
                               )
     
-
+def form_json(request):
+    #logger.debug("entering [%s]:[%s]" % (__file__, inspect.stack()[0][3]) )
+    method_name = "form_json"
+    template_form = "debug/form_sample_json.html" 
+    template_next = "debug/form_response" 
+    logger.debug("entering [%s]:[%s]" % (__file__, method_name) )
+    form = None
+    #logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
+    return render_to_response(template_form, {
+                                              'view_type': "lala",
+                                              'form': form,    
+                                              }
+                              )
+    
+    
 #@require_safe
 def form_sample(request):
     #logger.debug("entering [%s]:[%s]" % (__file__, inspect.stack()[0][3]) )
     logger.debug("entering [%s]:form_sample" % (__file__) )
-    template_form = "debug/form_sample.html" 
+    template_form = "debug/form_sample_input.html" 
+    template_next = "/debug/form_json" 
     
     logger.debug("template: [%s]" % template_form)
     show_errors = False
     if request.method == 'POST': # If the form has been submitted...
         form = VoteForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            return redirect('votuition.views.form_response')
+            # convert data to JSON
+            json_data = form.json()
+            logger.debug("json_data: [%s]" % json_data)
+            # construct query string
+            query_dict = QueryDict('json=%s' %  json_data)
+            query_string = query_dict.urlencode()
+            logger.debug("query_string: [%s]" % query_string)
+            #
+            full_redirect_url = template_next + "?" + query_string
+            logger.debug("full_redirect_url: [%s]" % full_redirect_url)
+            return redirect(full_redirect_url )
         else:
             show_errors = True
 

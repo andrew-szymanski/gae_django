@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Votuition: Form Submission form{% endblock %}
+{% block title %}Votuition workflow: step 1 - gather data{% endblock %}
 
 {% block content %}
 <br />
-<h1>Vote Submission form</h1>
+<h1>1. Gather data</h1>
 <br />
 <form action="/debug/form/" method="post">{% csrf_token %}
 	 <table border="1" cellspacing="0" cellpadding="10">
@@ -23,7 +23,7 @@
 	        </tr>
 	    {% endfor %}
     </table>
-    <p><input type="submit" value="POST results" /></p>
+    <p><input type="submit" value="convert to JSON" /></p>
 </form>
 
 {% endblock %}
