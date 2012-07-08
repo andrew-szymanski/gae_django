@@ -42,21 +42,21 @@ def form_sample(request):
     template_form = "debug/form_sample.html" 
     
     logger.debug("template: [%s]" % template_form)
+    show_errors = False
     if request.method == 'POST': # If the form has been submitted...
         form = VoteForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             return redirect('votuition.views.form_response')
-#            return render(request, template_response, {
-#                                                       'form': form,    
-#                                                       })
-            #return HttpResponseRedirect('/debug/form_sample_result.html') # Redirect after POST
+        else:
+            show_errors = True
 
     else:
         form = VoteForm() # An unbound form    
     
     return render(request, template_form, {
             'form': form,    
+            'show_errors': show_errors,
             })
 
 
