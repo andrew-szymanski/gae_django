@@ -28,6 +28,9 @@ class VoteForm(forms.Form):
         ret_json = simplejson.dumps(ret_dict)
         return ret_json
 
+class JsonForm(forms.Form):
+    json = forms.CharField(max_length=250)
+
 #class VoteModelForm(ModelForm):
 #    class Meta:
 #        model = Vote

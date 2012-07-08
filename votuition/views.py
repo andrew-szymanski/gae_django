@@ -13,6 +13,7 @@ from django.http import QueryDict
 import inspect
 from types import *
 from votuition.forms import VoteForm
+from votuition.forms import JsonForm
 
 
 # Get an instance of a logger
@@ -40,18 +41,36 @@ def form_response(request):
     
 def form_json(request):
     #logger.debug("entering [%s]:[%s]" % (__file__, inspect.stack()[0][3]) )
-    method_name = "form_json"
+    logger.debug("entering [%s]:form_json" % (__file__) )
     template_form = "debug/form_sample_json.html" 
-    template_next = "debug/form_response" 
-    logger.debug("entering [%s]:[%s]" % (__file__, method_name) )
-    form = None
-    #logger.debug("entering [%s]:[%s], form=[%s]" % (__file__, method_name, form) )
-    return render_to_response(template_form, {
-                                              'view_type': "lala",
-                                              'form': form,    
-                                              }
-                              )
+    template_next = "/debug/form_response" 
     
+    logger.debug("template: [%s], request method: [%s]" % (template_form, request.method) )
+    show_errors = False
+    json_str = "{}"
+    if request.method == 'POST': # If the form has been submitted...
+        form = JsonForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            #full_redirect_url = template_next + "?" + query_string
+            full_redirect_url = template_next
+            logger.debug("full_redirect_url: [%s]" % full_redirect_url)
+            return redirect(full_redirect_url )
+        else:
+            show_errors = True
+    else:
+        if request.method == 'GET':
+            # get json string
+            query_dict = request.GET
+            json_str = query_dict.get("json", "{}")
+            logger.debug("json_str: [%s]" % json_str)
+        form = JsonForm({'json': json_str}) # bound form    
+
+        
+    
+    return render(request, template_form, {
+            'form': form,    
+            'show_errors': show_errors,
+            })
     
 #@require_safe
 def form_sample(request):

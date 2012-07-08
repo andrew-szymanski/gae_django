@@ -5,6 +5,7 @@
 <br />
 <h1>2. Post JSON</h1>
 
+<form action="/debug/form_json/" method="post">{% csrf_token %}
 	 <table border="1" cellspacing="0" cellpadding="10">
 	    {% for field in form %}
 	    	  <tr class="fieldWrapper">
@@ -22,5 +23,7 @@
 	        </tr>
 	    {% endfor %}
     </table>
+    <p><input type="submit" value="POST json" /></p>
+</form>
     
 {% endblock %}
