@@ -54,10 +54,15 @@ def vote(request, version):
     except Exception, e:
         error_msg = "Error while populating record with json data[%s], error: [%s]" % (str_json, e)
         return __http_error_response__(error_msg)
-        
-
-
     
+    logger.debug("trying to save datastore record...")
+    try:
+        vote_record.save()
+    except Exception, e:
+        error_msg = "Error while trying to save Vote record with json data[%s], error: [%s]" % (str_json, e)
+        return __http_error_response__(error_msg)
+    logger.debug("trying to save datastore record DONE")
+        
     ret_json = simplejson.dumps(ret_dict)
     response = HttpResponse(status=200, content_type="application/json")
     response.write(ret_json)

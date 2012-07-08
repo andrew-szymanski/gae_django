@@ -60,6 +60,7 @@ def form_response(request):
         logger.debug(line) 
         output_lines.append(line) 
         return_message = ""
+        return_status = True
         try:
             line = "sending request..."
             logger.debug(line) 
@@ -91,7 +92,7 @@ def form_response(request):
             return_message = "%s %s" % (return_message, e)
             logger.error(return_message) 
             output_lines.append(return_message) 
-          
+            
     
     return render_to_response(template_response, {
                                               'view_type': "lala",
