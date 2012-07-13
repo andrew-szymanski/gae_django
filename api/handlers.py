@@ -46,20 +46,18 @@ def vote(request, version):
     vote_record = Vote()
     try:
         vote_record.user_id = pydict['user_id']
-        vote_record.org_id = pydict['org_id']
-        vote_record.campaign_id = pydict['campaign_id']
-        vote_record.metric = pydict['metric']
-        vote_record.value = pydict['value']
+        vote_record.subject = pydict['subject']
+        vote_record.vote = pydict['vote']
         vote_record.categories = pydict['categories']
     except Exception, e:
-        error_msg = "Error while populating record with json data[%s], error: [%s]" % (str_json, e)
+        error_msg = "(%s): Error while populating record with json data[%s], error: [%s]" % (method_name, str_json, e)
         return __http_error_response__(error_msg)
     
     logger.debug("trying to save datastore record...")
     try:
         vote_record.save()
     except Exception, e:
-        error_msg = "Error while trying to save Vote record with json data[%s], error: [%s]" % (str_json, e)
+        error_msg = "(%s): Error while trying to save Vote record with json data[%s], error: [%s]" % (method_name, str_json, e)
         return __http_error_response__(error_msg)
     logger.debug("trying to save datastore record DONE")
         

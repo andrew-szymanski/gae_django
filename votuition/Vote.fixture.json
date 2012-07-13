@@ -4,10 +4,8 @@
       "model": "votuition.vote",
       "fields": {
          "user_id": "a@b.com",
-         "org_id": "culica.android",
-         "campaign_id": "linkedin.recruiters.20120705",
-         "metric": "difficulty",
-         "value": 59,
+         "subject": "culica",
+         "vote": 59,
          "categories": ["android", "apps", "games", "puzzles"]
       }
    }

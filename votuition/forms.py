@@ -11,16 +11,12 @@ class VoteForm(forms.Form):
     subject = forms.CharField(max_length=100,initial='culica', label='what for',help_text='what the vote is for')
     vote = forms.IntegerField(label='how much',initial=5, help_text='numeric value')
     categories = forms.CharField(required=False,label='list of categories',help_text='optional, comma separated')
-    org_id = forms.CharField(required=False,label='org id',max_length=250,help_text='optional')
-    campaign_id = forms.CharField(required=False,label='campaign id',max_length=250,help_text='optional')
     
     def json(self):
         """ Hardcoded at the moment but ideally Model fields should be used instead
         """
         ret_dict = dict()
         ret_dict['user_id'] = self.cleaned_data['email']
-        ret_dict['org_id'] = self.cleaned_data['org_id']
-        ret_dict['campaign_id'] = self.cleaned_data['campaign_id']
         ret_dict['metric'] = self.cleaned_data['subject']
         ret_dict['value'] = self.cleaned_data['vote']
         ret_dict['categories'] = self.cleaned_data['categories'].split(",")
