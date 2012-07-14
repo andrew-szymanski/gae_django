@@ -30,13 +30,18 @@ def vote(request, version):
     str_json = ""
     
     logger.debug("parsing qeury string params...") 
-    if ( len(request.POST) > 0 ):
+    if request.method == 'POST':
         str_json = request.POST.items()
         str_pickle = cgi.escape(jsonpickle.encode(str_json))
-        logger.debug("POST len: [%s],  JSON: [%s]" % (len(request.POST), str_json))
+        logger.debug("POST len: [%s],  JSON: [%s]" % (len(str_json), str_json))
         for key, value in request.POST.items():
             dict_json = key
-            pydict = simplejson.loads(dict_json)
+            logger.debug("%s converting JSON string to dictionary..." % LOG_INDENT)
+            try:
+                pydict = simplejson.loads(dict_json)
+            except Exception, e:
+                error_msg = "ERROR trying to convert JSON string to dictionary, most likely invalid JSON: [%s]" % (dict_json)
+                return __http_error_response__(error_msg)
     else:
         error_msg = "ERROR request method: [%s] but only POST allowed" % (request.method)
         return __http_error_response__(error_msg)

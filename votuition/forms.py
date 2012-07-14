@@ -17,8 +17,8 @@ class VoteForm(forms.Form):
         """
         ret_dict = dict()
         ret_dict['user_id'] = self.cleaned_data['email']
-        ret_dict['metric'] = self.cleaned_data['subject']
-        ret_dict['value'] = self.cleaned_data['vote']
+        ret_dict['subject'] = self.cleaned_data['subject']
+        ret_dict['vote'] = self.cleaned_data['vote']
         ret_dict['categories'] = self.cleaned_data['categories'].split(",")
         
         ret_json = simplejson.dumps(ret_dict)
