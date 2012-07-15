@@ -56,15 +56,27 @@ def vote(request, version):
 
     # populate db model
     vote_record = Vote()
+    vote_record.ip = ip_address
+    
+    # categories are not manadatory
     try:
-        vote_record.ip = ip_address
+        vote_record.categories = pydict['categories']
+    except Exception, e:
+        error_msg = "(%s): Error while trying to get categories from json data[%s], error: [%s]" % (method_name, str_json, e)
+        logger.error(error_msg)
+        logger.error("Setting categories to empty list..")
+        vote_record.categories = list()
+    
+    try:
         vote_record.user_id = pydict['user_id']
         vote_record.subject = pydict['subject']
         vote_record.vote = pydict['vote']
-        vote_record.categories = pydict['categories']
     except Exception, e:
         error_msg = "(%s): Error while populating record with json data[%s], error: [%s]" % (method_name, str_json, e)
         return __http_error_response__(error_msg)
+
+
+
     
     logger.debug("trying to save datastore record...")
     try:
