@@ -21,6 +21,7 @@ class Metrics(models.Model):
 class Vote(models.Model):
     """ Vote specific table for jim
     """
+    ip = models.CharField(max_length=250)
     user_id = models.CharField(max_length=250)
     subject = models.CharField(max_length=250)
     vote = models.IntegerField()
@@ -33,5 +34,8 @@ class Vote(models.Model):
     def __unicode__(self):
 #        strRet = "[%s], [%s], [%s], [%s], [%s], [%s], [%s], [%s]" % (self.pipeline_id, self.step_name, self.step_description, self.type, 
 #                                                                     self.input_filename, self.pull_log, self.stage_log, self.load_log)
-        strRet = "[%s], [%s], [%s], [%s]" % (self.user_id, self.subject, self.vote, self.categories)
+        strRet = "[%s], [%s], [%s], [%s]" % (self.user_id, 
+                                             self.subject, 
+                                             self.vote, 
+                                             self.categories)
         return strRet   

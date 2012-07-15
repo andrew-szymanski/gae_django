@@ -22,7 +22,12 @@ def vote(request, version):
     method_name = "vote"
     logger.debug("%s starting..." %  (method_name))
     # constants for query params
-    
+    ip_address = ""
+    try:
+        ip_address = request.META['REMOTE_ADDR']
+    except Exception, e:
+        pass
+    logger.debug("IP: [%s]" % ip_address)
     
     # dictionary for returning JSON results
     ret_dict = dict()
@@ -52,6 +57,7 @@ def vote(request, version):
     # populate db model
     vote_record = Vote()
     try:
+        vote_record.ip = ip_address
         vote_record.user_id = pydict['user_id']
         vote_record.subject = pydict['subject']
         vote_record.vote = pydict['vote']
