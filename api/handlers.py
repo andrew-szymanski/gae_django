@@ -63,10 +63,12 @@ def vote(request, version):
         vote_record.categories = pydict['categories']
     except Exception, e:
         error_msg = "(%s): Error while trying to get categories from json data[%s], error: [%s]" % (method_name, str_json, e)
-        logger.error(error_msg)
-        logger.error("Setting categories to empty list..")
+        logger.warning(error_msg)
+        logger.warning("Setting categories to empty list..")
         vote_record.categories = list()
-    
+        vote_record.categories.append(unicode(""))
+
+    # mandatory fields - don't save if any missing / invalid    
     try:
         vote_record.user_id = pydict['user_id']
         vote_record.subject = pydict['subject']
