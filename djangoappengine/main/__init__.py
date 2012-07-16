@@ -66,7 +66,13 @@ from django.core import signals
 signals.got_request_exception.connect(log_traceback)
 
 # Create a Django application for WSGI
-application = WSGIHandler()
+# ASZ trying to force ssl:
+# http://security.stackexchange.com/questions/8964/trying-to-make-a-django-based-site-use-https-only-not-sure-if-its-secure
+_application = WSGIHandler()
+def application(environ, start_response):
+    if environ['wsgi.url_scheme'] == 'https':
+        environ['HTTPS'] = 'on'
+    return _application(environ, start_response)
 
 # Add the staticfiles handler if necessary
 if settings.DEBUG and 'django.contrib.staticfiles' in settings.INSTALLED_APPS:

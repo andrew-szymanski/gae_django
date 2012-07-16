@@ -21,6 +21,11 @@ def vote(request, version):
     """
     method_name = "vote"
     logger.debug("%s starting..." %  (method_name))
+    logger.debug("is_secure: [%s]" % request.is_secure())
+    if not request.is_secure():
+        error_msg = "ERROR: only https:// protocol allowed"
+        return __http_error_response__(error_msg)
+
     # constants for query params
     ip_address = ""
     try:
